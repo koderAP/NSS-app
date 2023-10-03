@@ -61,7 +61,13 @@ class MyHoursPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -115,9 +121,9 @@ class TotalHoursWidget extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(255, 255, 255, 255)
-                        .withOpacity(0.3),
-                    spreadRadius: 7,
+                    color: Color.fromARGB(255, 16, 25, 59)
+                        .withOpacity(1),
+                    spreadRadius: 8,
                     blurRadius: 10,
                     offset: const Offset(0, 3),
                   ),
@@ -183,52 +189,27 @@ class TotalCardsWidget extends StatelessWidget {
         .map((event) => event.hoursAllotted)
         .fold(0, (prev, curr) => prev + curr);
 
-    return Stack(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: CardWidget(
-                    backgroundImage: 'assets/images/image1.png',
-                    totalHours: totalGroundHours,
-                    title: 'Total Ground Hours',
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: CardWidget(
-                    backgroundImage: 'assets/images/image2.png',
-                    totalHours: totalNonGroundHours,
-                    title: 'Total Non-ground Hours',
-                  ),
-                ),
-              ],
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 10, 20),
+            child: CardWidget(
+              backgroundImage: 'assets/images/image1.png',
+              totalHours: totalGroundHours,
+              title: 'Total Ground Hours',
             ),
-          ],
+          ),
         ),
-        
-        Positioned(
-          top: 0,
-          left: MediaQuery.of(context).size.width *
-              0.165,
-          right: MediaQuery.of(context).size.width *
-              0.165, 
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/images/image1.png'),
-                radius: 40,
-              ),
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/images/image2.png'),
-                radius: 40,
-              ),
-            ],
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 20, 20, 20),
+            child: CardWidget(
+              backgroundImage: 'assets/images/image2.png',
+              totalHours: totalNonGroundHours,
+              title: 'Total Non-ground Hours',
+            ),
           ),
         ),
       ],
@@ -249,44 +230,68 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Column(
-        children: [
-          SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  '$totalHours hrs',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              SizedBox(height: 30),
+              Card(
+                color: Colors.white,
+                elevation: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 1.0, vertical: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            '$totalHours hrs',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          const Text(
+                            '(Max 100 hrs)',
+                            style: TextStyle(
+                              color: Colors.lightBlue,
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                const Text(
-                  '(Max 100 hrs)',
-                  style: TextStyle(
-                    color: Colors.lightBlue,
-                    fontSize: 6,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Center(
+          child: CircleAvatar(
+            backgroundImage: AssetImage(backgroundImage),
+            radius: 50,
+          ),
+        ),
+      ],
     );
   }
 }
